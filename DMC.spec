@@ -35,5 +35,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['C:\\Users\\kkoch\\OneDrive - BorgWarner\\Desktop\\DMC Code Creator\\DMC.ico'],
+    icon=['C:DMC.ico'],
 )
