@@ -13,9 +13,8 @@ import xlwings as xw
 #Variablen
 
 def get_inputs():
-    ergebnisse = {}  # Erstellen ein leeres Wörterbuch
-
-    # Fügen Ergebnisse zum Wörterbuch hinzu
+    ergebnisse = {} 
+    # Fügen Ergebnisse hinzu
     ergebnisse['Station'] = auswahlmenu_var.get()  # Stationsauswahl
     ergebnisse['SL'] = (entry_SL_NR.get(), entry_SL_DT.get())  # SL
     ergebnisse['STB'] = (entry_STB_NR.get(), entry_STB_DT.get())  # STB
@@ -29,15 +28,14 @@ def get_inputs():
 
     return ergebnisse
 
-# Funktion generien der Excel sheets wenn nicht vorhanden
-
+# Generien der Excel sheets wenn nicht vorhanden
 def generate_dmc_code():
     Inputs = get_inputs()
     wb = xw.Book()
     ws = wb.sheets.active
-
     Bilder_loeschen = []
     Erfolgreich = False
+    
     if Inputs['Station'] != "Prüfgeräte":
         row = 3
         col = 'A'
@@ -97,19 +95,15 @@ def generate_dmc_code():
     
 def edit_DMC_Code():
     Inputs = get_inputs()
-
     Bilder_loeschen = []
-
     wb = None
 
     if Inputs['Station'] != "Prüfgeräte":
         Erfolgreich = False
         for geraet, wert in Inputs.items():
-            
             if geraet in ['SL', 'STB', 'STW', 'SmartHead','WeraGrün','WeraGelb'] and isinstance(wert, tuple) and len(wert) == 2 and any(wert):
                 nr, dt = wert
                 if nr and dt :
-                    
                     DMC_IN = "Geraet: " + nr + " Pruefdatum: " + dt
                     encoded = encode(DMC_IN.encode())
                     DMC = Image.frombytes('RGB', (encoded.width, encoded.height), encoded.pixels)
@@ -127,9 +121,7 @@ def edit_DMC_Code():
                     Erfolgreich = True
                     Bilder_loeschen.append(output)
                 else:
-                    messagebox.showwarning("Eingabe leer !)","Bitte füllen Sie Feld Nummer und Prüfdatum aus")
-
-                    
+                    messagebox.showwarning("Eingabe leer !)","Bitte füllen Sie Feld Nummer und Prüfdatum aus")   
     else:
         Erfolgreich = False
         for geraet, wert in Inputs.items():
@@ -161,9 +153,7 @@ def edit_DMC_Code():
         messagebox.showinfo("Editiert :)","Excel erfolgreich editiert")
 
 
-
 # User Interface
-
 root = tk.Tk()
 style = ttk.Style()
 
@@ -174,12 +164,10 @@ button_font = ("Arial", 12, "bold")
 entry_font = ("Arial", 12)
 
 # Überschrift
-
 label1 = ttk.Label(root, text="DMC Code Generator", font=label1_font, underline=True)
 label1.grid(row=0, column=0, columnspan=2, pady=(0,10), padx=20)
 
 # Auswahlmenü
-
 optionen = ["Station auswählen","Station 1", "Station 2", "Station 3", "Station 4","Prüfgeräte"]
 auswahlmenu_var = tk.StringVar()
 auswahlmenu_var.set(optionen[0]) 
@@ -193,7 +181,6 @@ auswahlmenu.grid(row=2, column=0, columnspan=2, pady=(0,5))
 style.configure("TMenubutton", font=entry_font, width=17)
 
 # Eingabe SL Schrauber
-
 label_SL = ttk.Label(root, text="SL-Schrauber:", font=label_font)
 label_SL_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_SL_NR = ttk.Entry(root, font=entry_font)
@@ -201,7 +188,6 @@ label_SL_DT = ttk.Label(root, text="Prüfdatum: ", font=entry_font)
 entry_SL_DT = ttk.Entry(root, font=entry_font)
 
 # Eingabe STB Schrauber
-
 label_STB = ttk.Label(root, text="STB-Schrauber:", font=label_font)
 label_STB_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_STB_NR = ttk.Entry(root, font=entry_font)
@@ -209,7 +195,6 @@ label_STB_DT = ttk.Label(root, text="Prüfdatum: ", font=entry_font)
 entry_STB_DT = ttk.Entry(root, font=entry_font)
 
 # Eingabe ST-Wrench
-
 label_STW = ttk.Label(root, text="ST-Wrench:", font=label_font)
 label_STW_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_STW_NR = ttk.Entry(root,font=entry_font)
@@ -217,7 +202,6 @@ label_STW_DT = ttk.Label(root, text="Prüfdatum: ", font=entry_font)
 entry_STW_DT= ttk.Entry(root,font=entry_font)
 
 # Eingabe Smart Head
-
 label_SH = ttk.Label(root, text="Smart Head:", font=label_font)
 label_SH_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_SH_NR = ttk.Entry(root,font=entry_font)
@@ -225,7 +209,6 @@ label_SH_DT = ttk.Label(root, text="Prüfdatum: ", font=entry_font)
 entry_SH_DT= ttk.Entry(root,font=entry_font)
 
 # Eingabe Wera Grün
-
 label_WG = ttk.Label(root, text="Wera Grün:", font=label_font)
 label_WG_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_WG_NR = ttk.Entry(root,font=entry_font)
@@ -233,7 +216,6 @@ label_WG_DT = ttk.Label(root, text="Prüfdatum: ", font=entry_font)
 entry_WG_DT= ttk.Entry(root,font=entry_font)
 
 # Eingabe Wera Gelb
-
 label_WGe = ttk.Label(root, text="Wera Gelb:", font=label_font)
 label_WGe_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_WGe_NR = ttk.Entry(root,font=entry_font)
@@ -243,7 +225,6 @@ entry_WGe_DT= ttk.Entry(root,font=entry_font)
 # Eingabe Prüfgeräte
 
 # Eingabe Multimeter
-
 label_MT = ttk.Label(root, text="Multimeter:", font=label_font)
 label_MT_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_MT_NR = ttk.Entry(root, font=entry_font)
@@ -251,7 +232,6 @@ label_MT_DT = ttk.Label(root, text="Prüfdatum: ", font=entry_font)
 entry_MT_DT = ttk.Entry(root, font=entry_font)
 
 # Eingabe Metriso
-
 label_MI = ttk.Label(root, text="Metriso:", font=label_font)
 label_MI_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_MI_NR = ttk.Entry(root, font=entry_font)
@@ -259,7 +239,6 @@ label_MI_DT = ttk.Label(root, text="Prüfdatum: ", font=entry_font)
 entry_MI_DT = ttk.Entry(root, font=entry_font)
 
 # Eingabe Micoohmmeter
-
 label_MO = ttk.Label(root, text="Microohmmeter:", font=label_font)
 label_MO_NR = ttk.Label(root, text="Nummer: ", font=entry_font)
 entry_MO_NR = ttk.Entry(root,font=entry_font)
@@ -267,12 +246,10 @@ label_MO_DT = ttk.Label(root, text="Prüfdatum: ", font=entry_font)
 entry_MO_DT= ttk.Entry(root,font=entry_font)
 
 # Button DMC generieren
-
 button = ttk.Button(root, text="Generiere Excel", command=generate_dmc_code, style="Primary.TButton", width=20)
 style.configure("Primary.TButton", font=button_font)
 
 # Button Excel editieren
-
 button_2 = ttk.Button(root, text="Editiere Excel", command=edit_DMC_Code, style="Primary.TButton", width=20)
 style.configure("Primary.TButton", font=button_font)
 
